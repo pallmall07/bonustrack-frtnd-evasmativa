@@ -1,120 +1,102 @@
 import { useState } from 'react'
 import { mascotas } from './data/mascotas'
-
+import ListaMascotas from './components/ListaMascotas'
+import FiltroEspecie from './components/FiltroEspecie'
 
 function App() {
-  const [count, setCount] = useState(0)
-  console.log('Mascotas cargadas:', mascotas)
+  const [filtroEspecie, setFiltroEspecie] = useState('Todas')
+  const [busqueda, setBusqueda] = useState('')
+
+  // Filtrar mascotas por especie y nombre
+  const mascotasFiltradas = mascotas.filter((mascota) => {
+    const cumpleFiltroEspecie = 
+      filtroEspecie === 'Todas' || mascota.especie === filtroEspecie
+    
+    const cumpleBusqueda = 
+      mascota.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    
+    return cumpleFiltroEspecie && cumpleBusqueda
+  })
+
+  const styles = {
+    appContainer: {
+      minHeight: '100vh',
+      padding: '20px',
+      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    },
+    header: {
+      textAlign: 'center',
+      marginBottom: '30px',
+      padding: '30px 20px',
+      background: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    },
+    titulo: {
+      fontSize: '48px',
+      color: '#333',
+      marginBottom: '10px',
+      fontWeight: '800',
+      margin: '0 0 10px 0',
+    },
+    subtitulo: {
+      fontSize: '18px',
+      color: '#666',
+      fontWeight: '500',
+    },
+    controles: {
+      maxWidth: '1400px',
+      margin: '0 auto 30px',
+    },
+    busquedaContenedor: {
+      marginBottom: '20px',
+    },
+    inputBusqueda: {
+      width: '100%',
+      padding: '12px 16px',
+      fontSize: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '8px',
+      backgroundColor: 'white',
+      transition: 'all 0.3s ease',
+      fontFamily: 'inherit',
+    },
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={styles.appContainer}>
+      <header style={styles.header}>
+        <h1 style={styles.titulo}>🐾 AdoptaPet</h1>
+        <p style={styles.subtitulo}>Encuentra tu mascota ideal para adoptar</p>
+      </header>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <div style={styles.controles}>
+        <div style={styles.busquedaContenedor}>
+          <input
+            type="text"
+            style={styles.inputBusqueda}
+            placeholder="Busca por nombre..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#007bff'
+              e.target.style.boxShadow = '0 0 0 3px rgba(0, 123, 255, 0.1)'
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#ddd'
+              e.target.style.boxShadow = 'none'
+            }}
+          />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <FiltroEspecie 
+          especieSeleccionada={filtroEspecie}
+          onEspecieChange={setFiltroEspecie}
+        />
+      </div>
+
+      <ListaMascotas mascotas={mascotasFiltradas} />
+    </div>
   )
 }
 

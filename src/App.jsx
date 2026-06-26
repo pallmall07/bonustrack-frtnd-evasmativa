@@ -18,6 +18,9 @@ function App() {
     return cumpleFiltroEspecie && cumpleBusqueda
   })
 
+  // Contar mascotas con adopción urgente
+  const contadorUrgente = mascotas.filter((mascota) => mascota.adopcionUrgente).length
+
   const styles = {
     appContainer: {
       minHeight: '100vh',
@@ -61,6 +64,18 @@ function App() {
       transition: 'all 0.3s ease',
       fontFamily: 'inherit',
     },
+    contadorUrgente: {
+      maxWidth: '1400px',
+      margin: '0 auto 20px',
+      padding: '12px 16px',
+      backgroundColor: '#fff5f5',
+      border: '2px solid #ff6b6b',
+      borderRadius: '8px',
+      textAlign: 'center',
+      fontWeight: '600',
+      color: '#d63031',
+      fontSize: '16px',
+    },
   }
 
   return (
@@ -94,6 +109,12 @@ function App() {
           onEspecieChange={setFiltroEspecie}
         />
       </div>
+
+      {contadorUrgente > 0 && (
+        <div style={styles.contadorUrgente}>
+          ⚠️ {contadorUrgente} {contadorUrgente === 1 ? 'mascota tiene' : 'mascotas tienen'} adopción urgente
+        </div>
+      )}
 
       <ListaMascotas mascotas={mascotasFiltradas} />
     </div>
